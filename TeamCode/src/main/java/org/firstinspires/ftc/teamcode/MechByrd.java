@@ -11,15 +11,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Axis;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import static org.firstinspires.ftc.teamcode.HardwareByrd.HOOK_CLOSED;
-import static org.firstinspires.ftc.teamcode.HardwareByrd.HOOK_OPEN;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.GRABBER_CLOSED;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.GRABBER_OPEN;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.ROTATE_CLOSED;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.ROTATE_OPEN;
 
 @TeleOp(name="MechByrd")
 public class MechByrd extends OpMode {
     private HardwareByrd robot = new HardwareByrd();
     private Orientation angles;
     private double inputTimer = 0;
-    private boolean isHooked = false;
+    public boolean isHooked = false;
     @Override
     public void init() {
         robot.init(hardwareMap);
@@ -45,20 +47,24 @@ public class MechByrd extends OpMode {
         robot.backRight.setPower(v4*maxSpeed);
 
 
-        robot.liftLeft.setPower(gamepad2.left_stick_y);
-        robot.liftRight.setPower(gamepad2.left_stick_y);
-        robot.armLeft.setPower(gamepad2.right_stick_y);
-        robot.armRight.setPower(gamepad2.right_stick_y);
+        robot.lift.setPower(gamepad2.left_stick_y);
+        robot.intakeLeft.setPower(gamepad2.right_trigger);
+        robot.intakeRight.setPower(gamepad2.right_trigger);
 
+        //robot.hook.setPosition(gamepad2.a);
 
-        if(inputTimer+.2<getRuntime()) {
-            if (gamepad2.a) {
-                isHooked = !isHooked;
-                if(isHooked){robot.hook.setPosition(HOOK_CLOSED);}
-                else{robot.hook.setPosition(HOOK_OPEN);}
-                inputTimer = getRuntime();
-            }
+        if (gamepad2.x) {
+            robot.grab.setPosition(0.2);
+        }else if (gamepad2.a){
+            robot.grab.setPosition(0.5);
         }
+
+        if (gamepad2.y) {
+            robot.rotate.setPosition(0);
+        }else if (gamepad2.b){
+            robot.rotate.setPosition(1);
+        }
+
 
         float hsvValues[] = {0F, 0F, 0F};
 
@@ -93,12 +99,11 @@ public class MechByrd extends OpMode {
         telemetry.addData("FrontRight Power: ", robot.frontRight.getPower());
         telemetry.addData("BackLeft Power: ", robot.backLeft.getPower());
         telemetry.addData("BackRight Power: ", robot.backRight.getPower());
-        telemetry.addData("Lift Position: ", robot.liftLeft.getCurrentPosition());
-        telemetry.addData("Lift Position: ", robot.liftRight.getCurrentPosition());
-        telemetry.addData("Lift Power: ", robot.liftLeft.getPower());
-        telemetry.addData("Lift Power: ", robot.liftRight.getPower());
+        telemetry.addData("Lift Position: ", robot.lift.getCurrentPosition());
+        telemetry.addData("Lift Power: ", robot.lift.getPower());
         telemetry.addData("////Servo", " Info////");
-        telemetry.addData("Hook position: ", robot.hook.getPosition());
+        telemetry.addData("Grab position: ", robot.grab.getPosition());
+        telemetry.addData("Rotate position: ", robot.rotate.getPosition());
         telemetry.addData("Is Hooked:     ", isHooked);
         telemetry.addData("RunTime: ", getRuntime());
         telemetry.addData("InputTimer: ", inputTimer);

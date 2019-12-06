@@ -15,11 +15,13 @@ public class BlueCloseAutoByrd extends AutoByrd {
         waitForStart();
         autonomousStart();
         if (!isStopRequested()) {
-            /*armLeft(LIFT_DOWN);*/
-            /*armRight(LIFT_DOWN);*/
-           /* hook(UNHOOK);*/
-            moveArm(1000,.3);
-            stopArmMoving();
+            /*armLeft(LIFT_DOWN);
+            armRight(LIFT_DOWN);
+            hook(UNHOOK);*/
+            moveForward (50,.3);
+            sleep(1000);
+            moveIntake(0200,-.3);
+            stopIntakeMoving();
             sleep(1000);
             /*moveForward(300,.5);
             sleep(1000);

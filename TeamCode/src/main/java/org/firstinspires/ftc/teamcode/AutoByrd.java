@@ -15,13 +15,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import static org.firstinspires.ftc.teamcode.HardwareByrd.DEFAULT_TURN_SPEED;
-import static org.firstinspires.ftc.teamcode.HardwareByrd.HOOK_CLOSED;
-import static org.firstinspires.ftc.teamcode.HardwareByrd.HOOK_OPEN;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.GRABBER_CLOSED;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.GRABBER_OPEN;
 import static org.firstinspires.ftc.teamcode.HardwareByrd.INPUT_TIMER;
 import static org.firstinspires.ftc.teamcode.HardwareByrd.MOVE_FORE;
 import static org.firstinspires.ftc.teamcode.HardwareByrd.MOVE_LEFT;
 import static org.firstinspires.ftc.teamcode.HardwareByrd.MOVE_RIGHT;
 import static org.firstinspires.ftc.teamcode.HardwareByrd.PULSES_PER_REVOLUTION;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.ROTATE_CLOSED;
+import static org.firstinspires.ftc.teamcode.HardwareByrd.ROTATE_OPEN;
 import static org.firstinspires.ftc.teamcode.HardwareByrd.TURN_ERROR;
 
 public class AutoByrd extends LinearOpMode {
@@ -186,10 +188,10 @@ public class AutoByrd extends LinearOpMode {
         robot.backRight.setPower(0);
     }
 
-    void stopArmMoving() {
+    void stopIntakeMoving() {
         //Sets the power of all motors to zero and then waits for half a second
-        robot.armLeft.setPower(0);
-        robot.armRight.setPower(0);
+        robot.intakeLeft.setPower(0);
+        robot.intakeRight.setPower(0);
     }
 
     private void straighten() throws InterruptedException {
@@ -220,7 +222,8 @@ public class AutoByrd extends LinearOpMode {
         telemetry.addData("BackLeft Position:   ", robot.backLeft.getCurrentPosition());
         telemetry.addData("BackRight Position:  ", robot.backRight.getCurrentPosition());
         telemetry.addData("/////SERVOS", "//////");
-        telemetry.addData("Servo: ", robot.hook.getPosition());
+        telemetry.addData("Servo-grab: ", robot.grab.getPosition());
+        telemetry.addData("Servo-rotate: ", robot.rotate.getPosition());
         telemetry.addData("/////SENSOR DATA","/////");
         telemetry.addData("Gyro Heading:     ",gyroZ());
         telemetry.update();
@@ -281,11 +284,19 @@ public class AutoByrd extends LinearOpMode {
         }
     }
 
-    void hook(boolean IS_HOOK){
-        if(IS_HOOK){
-            robot.hook.setPosition(HOOK_CLOSED);
+    void grab(boolean IS_GRABBED){
+        if(IS_GRABBED){
+            robot.grab.setPosition(GRABBER_CLOSED);
         } else {
-            robot.hook.setPosition(HOOK_OPEN);
+            robot.grab.setPosition(GRABBER_OPEN);
+        }
+    }
+
+    void rotate(boolean IS_ROTATED){
+        if(IS_ROTATED){
+            robot.rotate.setPosition(ROTATE_CLOSED);
+        } else {
+            robot.rotate.setPosition(ROTATE_OPEN);
         }
     }
 
@@ -337,39 +348,43 @@ public class AutoByrd extends LinearOpMode {
         sleep(time);
     }
 
-    void moveArm (long time, double power){
-        robot.armLeft.setPower(power);
-        robot.armRight.setPower(power);
+    void moveIntake (long time, double power){
+        robot.intakeLeft.setPower(power);
+        robot.intakeRight.setPower(power);
         sleep(time);
+    }
+
+    void turnToDegree(double speed, int degree){
+        if (!((degree+1) < robot.imu.getAngularOrientation().firstAngle & (degree-1) > robot.imu.getAngularOrientation().firstAngle)){
+            while (robot.imu.getAngularOrientation().firstAngle < degree){
+                turnLeft(1,speed);
+            }
+            while (robot.imu.getAngularOrientation().firstAngle > degree){
+                turnRight(1,speed);
+            }
+        }
     }
 
 
     void lift(boolean LIFT_UP){
-        robot.liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.liftLeft.setPower(1);
-        robot.liftRight.setPower(1);
+        robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.lift.setPower(1);
         if(LIFT_UP){
-            robot.liftLeft.setTargetPosition(29000);
-            robot.liftRight.setTargetPosition(29000);
+            robot.lift.setTargetPosition(29000);
 
         } else {
-            robot.liftLeft.setTargetPosition(0);
-            robot.liftRight.setTargetPosition(0);
+            robot.lift.setTargetPosition(0);
         }
-        while(robot.liftLeft.isBusy()&&robot.liftRight.isBusy()){
+        while(robot.lift.isBusy()){
             sleep(5);
-            telemetry.addData("Pulses Remaining: ",24000-robot.liftLeft.getCurrentPosition());
-            telemetry.addData("Pulses Remaining: ",24000-robot.liftRight.getCurrentPosition());
+            telemetry.addData("Pulses Remaining: ",24000-robot.lift.getCurrentPosition());
             telemetry.update();
             if(isStopRequested()){
                 return;
             }
         }
-        robot.liftLeft.setPower(0);
-        robot.liftRight.setPower(0);
-        robot.liftLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.liftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lift.setPower(0);
+        robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private float gyroZ () {

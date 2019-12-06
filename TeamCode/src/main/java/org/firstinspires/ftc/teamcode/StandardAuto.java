@@ -16,7 +16,7 @@ public class StandardAuto extends AutoByrd {
         autonomousStart();
         if (!isStopRequested()) {
            /* lift(LIFT_DOWN);*/
-            hook(UNHOOK);
+            //hook(UNHOOK);
             sleep(1000);
             moveForward(6000,.5);
             stopMoving();
