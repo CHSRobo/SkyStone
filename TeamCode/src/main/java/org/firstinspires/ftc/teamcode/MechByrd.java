@@ -35,7 +35,7 @@ public class MechByrd extends OpMode {
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;// - radGyro;
         if(gamepad1.right_bumper){robotAngle=Math.PI*7/4; r=1;}
         else if (gamepad1.left_bumper){robotAngle=Math.PI*3/4; r=1;}
-        double rightX = 1.667*gamepad1.right_stick_x;
+        double rightX = 0.75*gamepad1.right_stick_x;
         final double v1 = r * Math.sqrt(2) * Math.cos(robotAngle) + rightX;
         final double v2 = r * Math.sqrt(2) * Math.sin(robotAngle) - rightX;
         final double v3 = r * Math.sqrt(2) * Math.sin(robotAngle) + rightX;
@@ -47,22 +47,18 @@ public class MechByrd extends OpMode {
         robot.backRight.setPower(v4*maxSpeed);
 
 
-        robot.lift.setPower(gamepad2.left_stick_y);
-        robot.intakeLeft.setPower(gamepad2.right_trigger);
-        robot.intakeRight.setPower(gamepad2.right_trigger);
+        robot.lift.setPower(-gamepad2.left_stick_y*2);
+        robot.rotate.setPower(-gamepad2.right_stick_y);
+        robot.rotate.setPower(gamepad2.right_stick_y);
+        robot.intakeLeft.setPower(-gamepad2.right_trigger*50);
+        robot.intakeRight.setPower(-gamepad2.right_trigger*50);
 
         //robot.hook.setPosition(gamepad2.a);
 
         if (gamepad2.x) {
-            robot.grab.setPosition(0.2);
+            robot.grab.setPosition(0.3);
         }else if (gamepad2.a){
-            robot.grab.setPosition(0.5);
-        }
-
-        if (gamepad2.y) {
-            robot.rotate.setPosition(0);
-        }else if (gamepad2.b){
-            robot.rotate.setPosition(1);
+            robot.grab.setPosition(0.7);
         }
 
 
@@ -103,7 +99,6 @@ public class MechByrd extends OpMode {
         telemetry.addData("Lift Power: ", robot.lift.getPower());
         telemetry.addData("////Servo", " Info////");
         telemetry.addData("Grab position: ", robot.grab.getPosition());
-        telemetry.addData("Rotate position: ", robot.rotate.getPosition());
         telemetry.addData("Is Hooked:     ", isHooked);
         telemetry.addData("RunTime: ", getRuntime());
         telemetry.addData("InputTimer: ", inputTimer);

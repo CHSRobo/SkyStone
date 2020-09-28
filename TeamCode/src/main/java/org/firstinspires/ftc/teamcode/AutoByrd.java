@@ -223,7 +223,6 @@ public class AutoByrd extends LinearOpMode {
         telemetry.addData("BackRight Position:  ", robot.backRight.getCurrentPosition());
         telemetry.addData("/////SERVOS", "//////");
         telemetry.addData("Servo-grab: ", robot.grab.getPosition());
-        telemetry.addData("Servo-rotate: ", robot.rotate.getPosition());
         telemetry.addData("/////SENSOR DATA","/////");
         telemetry.addData("Gyro Heading:     ",gyroZ());
         telemetry.update();
@@ -292,13 +291,6 @@ public class AutoByrd extends LinearOpMode {
         }
     }
 
-    void rotate(boolean IS_ROTATED){
-        if(IS_ROTATED){
-            robot.rotate.setPosition(ROTATE_CLOSED);
-        } else {
-            robot.rotate.setPosition(ROTATE_OPEN);
-        }
-    }
 
     void moveForward (long time, double power){
         robot.frontLeft.setPower(power);

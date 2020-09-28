@@ -27,11 +27,11 @@ public class HardwareByrd
         DcMotor  backRight         = null;
         DcMotor  backLeft          = null;
         DcMotor  lift              = null;
+        DcMotor  rotate            = null;
         DcMotor  intakeLeft        = null;
         DcMotor  intakeRight       = null;
 
         Servo    grab              = null;
-        Servo    rotate            = null;
 
         // The IMU sensor object
         BNO055IMU imu;
@@ -100,11 +100,11 @@ public class HardwareByrd
         backLeft   = ahwMap.get(DcMotor.class, "bl");
 
         lift   = ahwMap.get(DcMotor.class, "lift");
+        rotate   = ahwMap.get(DcMotor.class, "rotate");
         intakeLeft  = ahwMap.get(DcMotor.class, "intakeLeft");
         intakeRight  = ahwMap.get(DcMotor.class, "intakeRight");
 
         grab   = ahwMap.get(Servo.class, "grab");
-        rotate   = ahwMap.get(Servo.class, "rotate");
 
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -112,6 +112,7 @@ public class HardwareByrd
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
         lift.setDirection(DcMotor.Direction.FORWARD);
+        rotate.setDirection(DcMotor.Direction.FORWARD);
         intakeLeft.setDirection(DcMotor.Direction.REVERSE);
         intakeRight.setDirection(DcMotor.Direction.FORWARD);
 
@@ -125,6 +126,7 @@ public class HardwareByrd
         intakeLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intakeRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set all motors to zero power
         frontRight.setPower(0);
@@ -135,6 +137,7 @@ public class HardwareByrd
         intakeLeft.setPower(0);
         intakeRight.setPower(0);
         lift.setPower(0);
+        rotate.setPower(0);
 
         //hook.setPosition(HOOK_CLOSED);
 
@@ -152,3 +155,12 @@ public class HardwareByrd
 
     }
 }
+
+
+
+
+
+
+
+
+
