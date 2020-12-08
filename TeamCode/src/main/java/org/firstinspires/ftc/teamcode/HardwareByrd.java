@@ -26,11 +26,13 @@ public class HardwareByrd
         DcMotor  frontLeft         = null;
         DcMotor  backRight         = null;
         DcMotor  backLeft          = null;
-        DcMotor  lift              = null;
-        DcMotor  rotate            = null;
-        DcMotor  intakeLeft        = null;
-        DcMotor  intakeRight       = null;
+        DcMotor  axleLeft          = null;
+        DcMotor  axleRight         = null;
+        DcMotor  outtakeLeft       = null;
+        DcMotor  outtakeRight      = null;
 
+        Servo    push              = null;
+        Servo    arm               = null;
         Servo    grab              = null;
 
         // The IMU sensor object
@@ -58,14 +60,23 @@ public class HardwareByrd
 
         static double TURN_ERROR = 1;
 
-        static boolean LIFT_UP = true;
-        static boolean LIFT_DOWN = false;
+        static boolean UNGRAB = false;
+        static boolean GRAB = true;
 
-        static boolean UNHOOK = false;
-        static boolean HOOK   = true;
+        static boolean UNARM = false;
+        static boolean ARM   = true;
 
-        static double  GRABBER_CLOSED = 0;
-        static double  GRABBER_OPEN   = 1;
+        static boolean UNPUSH = false;
+        static boolean PUSH   = true;
+
+        static double  PUSH_PUSHED = 0.3;
+        static double  PUSH_NOTPUSHED   = 1;
+
+        static double  GRABBER_CLOSED = 0.2;
+        static double  GRABBER_OPEN   = 0.7;
+
+        static double  ARM_UP = 0;
+        static double  ARM_DOWN   = 1;
 
         static double  ROTATE_CLOSED = 0;
         static double  ROTATE_OPEN   = 1;
@@ -94,27 +105,29 @@ public class HardwareByrd
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Define and Initialize Motors
-        frontRight = ahwMap.get(DcMotor.class, "fr");
-        frontLeft  = ahwMap.get(DcMotor.class, "fl");
-        backRight  = ahwMap.get(DcMotor.class, "br");
-        backLeft   = ahwMap.get(DcMotor.class, "bl");
+        frontRight   = ahwMap.get(DcMotor.class, "fr");
+        frontLeft    = ahwMap.get(DcMotor.class, "fl");
+        backRight    = ahwMap.get(DcMotor.class, "br");
+        backLeft     = ahwMap.get(DcMotor.class, "bl");
 
-        lift   = ahwMap.get(DcMotor.class, "lift");
-        rotate   = ahwMap.get(DcMotor.class, "rotate");
-        intakeLeft  = ahwMap.get(DcMotor.class, "intakeLeft");
-        intakeRight  = ahwMap.get(DcMotor.class, "intakeRight");
+        axleLeft     = ahwMap.get(DcMotor.class, "axleLeft");
+        axleRight    = ahwMap.get(DcMotor.class, "axleRight");
+        outtakeLeft  = ahwMap.get(DcMotor.class, "outtakeLeft");
+        outtakeRight = ahwMap.get(DcMotor.class, "outtakeRight");
 
-        grab   = ahwMap.get(Servo.class, "grab");
+        push         = ahwMap.get(Servo.class, "push");
+        arm         = ahwMap.get(Servo.class, "arm");
+        grab         = ahwMap.get(Servo.class, "grab");
 
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        lift.setDirection(DcMotor.Direction.FORWARD);
-        rotate.setDirection(DcMotor.Direction.FORWARD);
-        intakeLeft.setDirection(DcMotor.Direction.REVERSE);
-        intakeRight.setDirection(DcMotor.Direction.FORWARD);
+        axleLeft.setDirection(DcMotor.Direction.FORWARD);
+        axleRight.setDirection(DcMotor.Direction.REVERSE);
+        outtakeLeft.setDirection(DcMotor.Direction.REVERSE);
+        outtakeRight.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -123,10 +136,10 @@ public class HardwareByrd
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        intakeLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtakeLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtakeRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        axleLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        axleRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set all motors to zero power
         frontRight.setPower(0);
@@ -134,10 +147,10 @@ public class HardwareByrd
         backRight.setPower(0);
         backLeft.setPower(0);
 
-        intakeLeft.setPower(0);
-        intakeRight.setPower(0);
-        lift.setPower(0);
-        rotate.setPower(0);
+        outtakeLeft.setPower(0);
+        outtakeRight.setPower(0);
+        axleLeft.setPower(0);
+        axleRight.setPower(0);
 
         //hook.setPosition(HOOK_CLOSED);
 

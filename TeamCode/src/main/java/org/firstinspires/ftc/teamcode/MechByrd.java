@@ -22,6 +22,7 @@ public class MechByrd extends OpMode {
     private Orientation angles;
     private double inputTimer = 0;
     public boolean isHooked = false;
+
     @Override
     public void init() {
         robot.init(hardwareMap);
@@ -47,18 +48,31 @@ public class MechByrd extends OpMode {
         robot.backRight.setPower(v4*maxSpeed);
 
 
-        robot.lift.setPower(-gamepad2.left_stick_y*2);
-        robot.rotate.setPower(-gamepad2.right_stick_y);
-        robot.rotate.setPower(gamepad2.right_stick_y);
-        robot.intakeLeft.setPower(-gamepad2.right_trigger*50);
-        robot.intakeRight.setPower(-gamepad2.right_trigger*50);
+        robot.axleLeft.setPower(-gamepad2.left_stick_y*0.15);
+        robot.axleRight.setPower(-gamepad2.left_stick_y*0.15);
+        robot.outtakeLeft.setPower(-gamepad2.right_stick_y*50);
+        robot.outtakeRight.setPower(-gamepad2.right_stick_y*50);
 
         //robot.hook.setPosition(gamepad2.a);
 
-        if (gamepad2.x) {
-            robot.grab.setPosition(0.3);
+        if (gamepad2.dpad_up) {
+            robot.push.setPosition(0.3);
+        }else if (gamepad2.dpad_down){
+            robot.push.setPosition(1);
+        }
+
+       if (gamepad2.x) {
+            robot.arm.setPosition(0);
         }else if (gamepad2.a){
-            robot.grab.setPosition(0.7);
+            robot.arm.setPosition(0.4);
+        }else if (gamepad2.b){
+            robot.arm.setPosition(1);
+        }
+
+        if (gamepad2.dpad_left) {
+            robot.grab.setPosition(0.1);
+        }else if (gamepad2.dpad_right){
+            robot.grab.setPosition(0.8);
         }
 
 
@@ -89,16 +103,15 @@ public class MechByrd extends OpMode {
         telemetry.addData("Color Alpha: ", robot.sensorColor.alpha());*/
         telemetry.addData("Color H: ", hsvValues[0]);
         telemetry.addData("Color S:  ", hsvValues[1]);
+
         telemetry.addData("Color V: ", hsvValues[2]);
         telemetry.addData("////Motor", " Info////");
         telemetry.addData("FrontLeft Power: ", robot.frontLeft.getPower());
         telemetry.addData("FrontRight Power: ", robot.frontRight.getPower());
         telemetry.addData("BackLeft Power: ", robot.backLeft.getPower());
         telemetry.addData("BackRight Power: ", robot.backRight.getPower());
-        telemetry.addData("Lift Position: ", robot.lift.getCurrentPosition());
-        telemetry.addData("Lift Power: ", robot.lift.getPower());
         telemetry.addData("////Servo", " Info////");
-        telemetry.addData("Grab position: ", robot.grab.getPosition());
+        //telemetry.addData("Grab position: ", robot.grab.getPosition());
         telemetry.addData("Is Hooked:     ", isHooked);
         telemetry.addData("RunTime: ", getRuntime());
         telemetry.addData("InputTimer: ", inputTimer);
