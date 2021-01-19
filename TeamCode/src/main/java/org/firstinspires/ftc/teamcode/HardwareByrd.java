@@ -26,14 +26,14 @@ public class HardwareByrd
         DcMotor  frontLeft         = null;
         DcMotor  backRight         = null;
         DcMotor  backLeft          = null;
-        DcMotor  axleLeft          = null;
-        DcMotor  axleRight         = null;
-        DcMotor  outtakeLeft       = null;
-        DcMotor  outtakeRight      = null;
+        DcMotor  intake            = null;
+        DcMotor  outtake           = null;
+        //DcMotor  outtakeLeft       = null;
+        //DcMotor  outtakeRight      = null;
 
         Servo    push              = null;
-        Servo    arm               = null;
-        Servo    grab              = null;
+        //Servo    arm               = null;
+        //Servo    grab              = null;
 
         // The IMU sensor object
         BNO055IMU imu;
@@ -110,24 +110,24 @@ public class HardwareByrd
         backRight    = ahwMap.get(DcMotor.class, "br");
         backLeft     = ahwMap.get(DcMotor.class, "bl");
 
-        axleLeft     = ahwMap.get(DcMotor.class, "axleLeft");
-        axleRight    = ahwMap.get(DcMotor.class, "axleRight");
-        outtakeLeft  = ahwMap.get(DcMotor.class, "outtakeLeft");
-        outtakeRight = ahwMap.get(DcMotor.class, "outtakeRight");
+        intake       = ahwMap.get(DcMotor.class, "intake");
+        outtake      = ahwMap.get(DcMotor.class, "outtake");
+        //outtakeLeft  = ahwMap.get(DcMotor.class, "outtakeLeft");
+        //outtakeRight = ahwMap.get(DcMotor.class, "outtakeRight");
 
         push         = ahwMap.get(Servo.class, "push");
-        arm         = ahwMap.get(Servo.class, "arm");
-        grab         = ahwMap.get(Servo.class, "grab");
+        //arm         = ahwMap.get(Servo.class, "arm");
+        //grab         = ahwMap.get(Servo.class, "grab");
 
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        axleLeft.setDirection(DcMotor.Direction.FORWARD);
-        axleRight.setDirection(DcMotor.Direction.REVERSE);
-        outtakeLeft.setDirection(DcMotor.Direction.REVERSE);
-        outtakeRight.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        //outtakeLeft.setDirection(DcMotor.Direction.REVERSE);
+        //outtakeRight.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -136,10 +136,10 @@ public class HardwareByrd
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        outtakeLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        outtakeRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        axleLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        axleRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //axleLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //axleRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set all motors to zero power
         frontRight.setPower(0);
@@ -147,10 +147,10 @@ public class HardwareByrd
         backRight.setPower(0);
         backLeft.setPower(0);
 
-        outtakeLeft.setPower(0);
-        outtakeRight.setPower(0);
-        axleLeft.setPower(0);
-        axleRight.setPower(0);
+        intake.setPower(0);
+        outtake.setPower(0);
+        //axleLeft.setPower(0);
+        //axleRight.setPower(0);
 
         //hook.setPosition(HOOK_CLOSED);
 

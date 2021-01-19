@@ -29,7 +29,7 @@ public class UltimateGoalAutoRight extends AutoByrd {
             sleep(0500);
             push(PUSH);
             sleep(0500);
-            moveAxle(0500,2);
+            //moveAxle(0500,2);
             moveOuttake(3000,2);
             sleep(0500);
             moveForward(1000,0.5);

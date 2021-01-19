@@ -194,8 +194,8 @@ public class AutoByrd extends LinearOpMode {
 
     void stopOuttakeMoving() {
         //Sets the power of all motors to zero and then waits for half a second
-        robot.outtakeLeft.setPower(0);
-        robot.outtakeRight.setPower(0);
+        robot.outtake.setPower(0);
+        //robot.outtakeRight.setPower(0);
     }
 
     private void straighten() throws InterruptedException {
@@ -295,7 +295,7 @@ public class AutoByrd extends LinearOpMode {
         }
     }
 
-   void arm(boolean IS_MOVED){
+   /*void arm(boolean IS_MOVED){
         if(IS_MOVED){
             robot.arm.setPosition(ARM_UP);
         } else {
@@ -309,7 +309,7 @@ public class AutoByrd extends LinearOpMode {
         } else {
             robot.grab.setPosition(GRABBER_OPEN);
         }
-    }
+    }*/
 
 
     void moveForward (long time, double power){
@@ -361,12 +361,18 @@ public class AutoByrd extends LinearOpMode {
     }
 
     void moveOuttake (long time, double power){
-        robot.outtakeLeft.setPower(-power);
-        robot.outtakeRight.setPower(power);
+        robot.outtake.setPower(-power);
+        //robot.outtakeRight.setPower(power);
         sleep(time);
     }
 
-    void moveAxle (long time, double power){
+    void moveIntake (long time, double power){
+        robot.intake.setPower(-power);
+        //robot.outtakeRight.setPower(power);
+        sleep(time);
+    }
+
+    /*void moveAxle (long time, double power){
         robot.axleLeft.setPower(power);
         robot.axleRight.setPower(power);
         sleep(time);
@@ -376,7 +382,7 @@ public class AutoByrd extends LinearOpMode {
         robot.axleLeft.setPower(-power);
         robot.axleRight.setPower(power);
         sleep(time);
-    }
+    }*/
 
     void turnToDegree(double speed, int degree){
         if (!((degree+1) < robot.imu.getAngularOrientation().firstAngle & (degree-1) > robot.imu.getAngularOrientation().firstAngle)){
